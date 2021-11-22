@@ -36,8 +36,8 @@ Partial Class Form1
         Me.Set_Zero = New System.Windows.Forms.Button()
         Me.Ret_Zero = New System.Windows.Forms.Button()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.TextBox2 = New System.Windows.Forms.TextBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.ListBox1 = New System.Windows.Forms.ListBox()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -109,6 +109,14 @@ Partial Class Form1
         Me.proses.Text = "RUN"
         Me.proses.UseVisualStyleBackColor = True
         '
+        'SerialPort1
+        '
+        Me.SerialPort1.BaudRate = 115200
+        Me.SerialPort1.PortName = "COM6"
+        '
+        'Timer1
+        '
+        '
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.Baud)
@@ -128,7 +136,7 @@ Partial Class Form1
         '
         'Set_Zero
         '
-        Me.Set_Zero.Location = New System.Drawing.Point(21, 238)
+        Me.Set_Zero.Location = New System.Drawing.Point(57, 238)
         Me.Set_Zero.Name = "Set_Zero"
         Me.Set_Zero.Size = New System.Drawing.Size(117, 40)
         Me.Set_Zero.TabIndex = 11
@@ -137,7 +145,7 @@ Partial Class Form1
         '
         'Ret_Zero
         '
-        Me.Ret_Zero.Location = New System.Drawing.Point(194, 238)
+        Me.Ret_Zero.Location = New System.Drawing.Point(206, 238)
         Me.Ret_Zero.Name = "Ret_Zero"
         Me.Ret_Zero.Size = New System.Drawing.Size(117, 40)
         Me.Ret_Zero.TabIndex = 12
@@ -153,18 +161,9 @@ Partial Class Form1
         Me.TextBox1.Size = New System.Drawing.Size(316, 386)
         Me.TextBox1.TabIndex = 13
         '
-        'TextBox2
-        '
-        Me.TextBox2.Location = New System.Drawing.Point(20, 42)
-        Me.TextBox2.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.TextBox2.Multiline = True
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(316, 390)
-        Me.TextBox2.TabIndex = 14
-        '
         'GroupBox2
         '
-        Me.GroupBox2.Controls.Add(Me.TextBox2)
+        Me.GroupBox2.Controls.Add(Me.ListBox1)
         Me.GroupBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox2.Location = New System.Drawing.Point(822, 15)
         Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
@@ -174,6 +173,15 @@ Partial Class Form1
         Me.GroupBox2.TabIndex = 15
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Status"
+        '
+        'ListBox1
+        '
+        Me.ListBox1.FormattingEnabled = True
+        Me.ListBox1.ItemHeight = 29
+        Me.ListBox1.Location = New System.Drawing.Point(18, 42)
+        Me.ListBox1.Name = "ListBox1"
+        Me.ListBox1.Size = New System.Drawing.Size(336, 381)
+        Me.ListBox1.TabIndex = 0
         '
         'GroupBox3
         '
@@ -205,7 +213,6 @@ Partial Class Form1
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
-        Me.GroupBox2.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
         Me.ResumeLayout(False)
@@ -225,7 +232,7 @@ Partial Class Form1
     Friend WithEvents Set_Zero As Button
     Friend WithEvents Ret_Zero As Button
     Friend WithEvents TextBox1 As TextBox
-    Friend WithEvents TextBox2 As TextBox
     Friend WithEvents GroupBox2 As GroupBox
     Friend WithEvents GroupBox3 As GroupBox
+    Friend WithEvents ListBox1 As ListBox
 End Class
