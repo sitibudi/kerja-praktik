@@ -4,16 +4,15 @@ Imports System.ComponentModel
 Imports System.Threading
 Imports System.IO.Ports
 Imports System.ConsoleKey
-Imports RepeatButton
+'Imports RepeatButton'
 Imports System.Net
 Imports System.Net.Sockets
 Imports System.Text
 Public Class Form1
     Dim myPort As Array  'COM Ports detected on the system will be stored here
     Delegate Sub SetTextCallback(ByVal [text] As String) 'Added to prevent threading errors during receiveing of data
-    Declare Sub Sleep Lib "kernel32.dll" (ByVal Milliseconds As Integer)
-    Dim MyG As System.Drawing.Graphics
-    Dim i, barisan, relX, relY, posX1, posY1, posX2, posY2, sudut, pena, arah As Integer
+
+    Dim i, barisan As Integer
 
     Private Sub proses_Click(sender As Object, e As EventArgs) Handles proses.Click
         Dim baris = TextBox1.Lines()
@@ -21,14 +20,39 @@ Public Class Form1
         ListBox1.Items.Clear()
 
         i = 0
-        While i < barisan  'jika ada instruksi
+        While i < barisan 'jika ada instruksi
             Dim myData = baris(i).Split(New Char() {"("c})
             If myData(0) = "maju" Then
-                Dim nilai As String = Val(myData(1))
-                Dim insgcode As String = "G21G91G1X1F791"
+                Dim nilai As Integer = Val(myData(1))
+                Dim insgcode As String = "G90G21X" + Str(nilai) + "F790" '+ Chr(13) + Chr(10)
+                'Dim insgcode As String = "G90G21X1F790" + Str(nilai) + Chr(13) + Chr(10)
+
+
+                SerialPort1.WriteLine(insgcode)
+
+            End If
+            If myData(0) = "pena" Then
+                Dim nilai As Char = (myData(1))
+                Dim insgcode As String = "M03 S10"
+
+                SerialPort1.WriteLine(insgcode)
+            End If
+            If myData(0) = "penadown" Then
+                Dim nilai As Char = (myData(1))
+                Dim insgcode As String = "M03 S80"
+                SerialPort1.WriteLine(insgcode)
+            End If
+
+        End While
+        While i < barisan
+            Dim dataku = baris(i).Split(New Char() {"("})
+            If dataku(0) = "mundur" Then
+                Dim hasil As String = Val(dataku(1))
+                Dim insgcode As String = "G90G21X-1F790" + Str(hasil)
                 SerialPort1.WriteLine(insgcode)
             End If
         End While
+
     End Sub
 
 
@@ -51,6 +75,18 @@ Public Class Form1
 
 
         Timer1.Start()
+    End Sub
+    Private Sub SerialPort1_DataReceived(sender As System.Object, e As System.IO.Ports.SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
+        ReceivedText(SerialPort1.ReadExisting())
+    End Sub
+
+    Private Sub ReceivedText(ByVal [insgcode] As String) 'input from ReadExisting
+        If Me.ListBox1.InvokeRequired Then
+            Dim x As New SetTextCallback(AddressOf ReceivedText)
+            Me.Invoke(x, New Object() {(insgcode)})
+        Else
+            Me.ListBox1.Text &= [insgcode] 'append text
+        End If
     End Sub
     Private Sub Port_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Port.SelectedIndexChanged
 

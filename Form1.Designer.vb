@@ -112,7 +112,7 @@ Partial Class Form1
         'SerialPort1
         '
         Me.SerialPort1.BaudRate = 115200
-        Me.SerialPort1.PortName = "COM6"
+        Me.SerialPort1.PortName = "COM7"
         '
         'Timer1
         '
