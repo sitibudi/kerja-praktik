@@ -4,10 +4,7 @@ Imports System.ComponentModel
 Imports System.Threading
 Imports System.IO.Ports
 Imports System.ConsoleKey
-Imports RepeatButton
-Imports System.Net
-Imports System.Net.Sockets
-Imports System.Text
+
 Public Class Form1
     Dim myPort As Array  'COM Ports detected on the system will be stored here
     'Dim MyG As System.Drawing.Graphics
@@ -17,30 +14,54 @@ Public Class Form1
     Dim MyG As System.Drawing.Graphics
     Dim i, barisan, relX, relY, posX1, posY1, posX2, posY2, sudut, pena, arah As Integer
 
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles Button1.Click
+        SerialPort1.Write(ListBox1.Text)
+    End Sub
+
     Private Sub proses_Click(sender As Object, e As EventArgs) Handles proses.Click
         Dim baris = TextBox1.Lines()
         barisan = UBound(baris) - LBound(baris)
-        ListBox1.Items.Clear()
+        'ListBox1.Items.Clear()
+        'ListBox1.GetItemText()
 
         i = 0
-        While i < barisan  'jika ada instruksi
-            Dim myData = baris(i).Split(New Char() {"("c})
+        'While i < barisan  'jika ada instruksi
+        '    Dim myData = baris(i).Split(New Char() {"("c})
+        '    If myData(0) = "maju" Then
+        '        Dim nilai As String = Val(myData(1))
+        '        Dim insgcode As String = "G21G91G1X1F1000" + "G90 G24"
+        '        SerialPort1.WriteLine(insgcode)
+        '        ListBox1.Items.Add(insgcode)
+        '    End If
+        'End While
+
+        If i < barisan Then  'jika ada instruksi then 
+            Dim myData = baris(barisan).Split(New Char() {"("c})
             If myData(0) = "maju" Then
                 Dim nilai As String = Val(myData(1))
-                Dim insgcode As String = "G21G91G1X1F791"
+                Dim insgcode As String = "G21G91G1X" + Str(nilai) + "F1000"
                 SerialPort1.WriteLine(insgcode)
+                ListBox1.Items.Add(insgcode)
             End If
-        End While
+
+            If myData(0) = "mundur" Then
+                Dim nilai As String = Val(myData(1))
+                Dim insgcode As String = "G21G91G1X-" + Str(nilai) + "F1000"
+                SerialPort1.WriteLine(insgcode)
+                ListBox1.Items.Add(insgcode)
+            End If
+        End If
+
     End Sub
 
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'When our form loads, auto detect all serial ports in the system and populate the Port Combo box.
         myPort = IO.Ports.SerialPort.GetPortNames() 'Get all com ports available
-        Baud.Items.Add(9600)     'Populate the Baud Combo box to common baud rates used   
-        Baud.Items.Add(19200)
-        Baud.Items.Add(38400)
-        Baud.Items.Add(57600)
+        'Baud.Items.Add(9600)     'Populate the Baud Combo box to common baud rates used   
+        'Baud.Items.Add(19200)
+        'Baud.Items.Add(38400)
+        'Baud.Items.Add(57600)
         Baud.Items.Add(115200)
 
         For i = 0 To UBound(myPort)
@@ -55,7 +76,7 @@ Public Class Form1
         Timer1.Start()
     End Sub
 
-
+    'connect button code
     Private Sub Connected_Click(sender As Object, e As EventArgs) Handles Connected.Click
         SerialPort1.PortName = Port.Text         'Set SerialPort1 to the selected COM port at startup
         SerialPort1.BaudRate = Baud.Text         'Set Baud rate to the selected value on 
@@ -70,17 +91,12 @@ Public Class Form1
         Disconnected.Enabled = True        'and Enable Disconnect button
     End Sub
 
-
-
-    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-
-    End Sub
-
     Private Sub Disconnected_Click(sender As Object, e As EventArgs) Handles Disconnected.Click
         SerialPort1.Close()             'Close our Serial Por'
         Connected.Enabled = True
         Disconnected.Enabled = False
     End Sub
+
 
 
 End Class
