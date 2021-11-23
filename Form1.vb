@@ -5,6 +5,8 @@ Imports System.Threading
 Imports System.IO.Ports
 Public Class Form1
     Dim myPort As Array  'COM Ports detected on the system will be stored here
+    'Dim MyG As System.Drawing.Graphics
+    'Dim i, barisan, relX, relY, posX1, posY1, posX2, posY2, sudut, pena, arah As Integer
     Delegate Sub SetTextCallback(ByVal [text] As String) 'Added to prevent threading errors during receiveing of data
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -24,9 +26,7 @@ Public Class Form1
 
         Disconnected.Enabled = False           'Initially Disconnect Button is Disabled
     End Sub
-    Private Sub Port_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Port.SelectedIndexChanged
 
-    End Sub
 
     Private Sub Connected_Click(sender As Object, e As EventArgs) Handles Connected.Click
         SerialPort1.PortName = Port.Text         'Set SerialPort1 to the selected COM port at startup
