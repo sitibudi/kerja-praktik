@@ -4,19 +4,15 @@ Imports System.ComponentModel
 Imports System.Threading
 Imports System.IO.Ports
 Imports System.ConsoleKey
-
+Imports RepeatButton
+Imports System.Net
+Imports System.Net.Sockets
+Imports System.Text
 Public Class Form1
     Dim myPort As Array  'COM Ports detected on the system will be stored here
     'Dim MyG As System.Drawing.Graphics
     'Dim i, barisan, relX, relY, posX1, posY1, posX2, posY2, sudut, pena, arah As Integer
     Delegate Sub SetTextCallback(ByVal [text] As String) 'Added to prevent threading errors during receiveing of data
-    Declare Sub Sleep Lib "kernel32.dll" (ByVal Milliseconds As Integer)
-    Dim MyG As System.Drawing.Graphics
-    Dim i, barisan, relX, relY, posX1, posY1, posX2, posY2, sudut, pena, arah As Integer
-
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles Button1.Click
-        SerialPort1.Write(ListBox1.Text)
-    End Sub
 
     Private Sub proses_Click(sender As Object, e As EventArgs) Handles proses.Click
         Dim baris = TextBox1.Lines()
@@ -24,34 +20,16 @@ Public Class Form1
         'ListBox1.Items.Clear()
         'ListBox1.GetItemText()
 
-        i = 0
-        'While i < barisan  'jika ada instruksi
-        '    Dim myData = baris(i).Split(New Char() {"("c})
-        '    If myData(0) = "maju" Then
-        '        Dim nilai As String = Val(myData(1))
-        '        Dim insgcode As String = "G21G91G1X1F1000" + "G90 G24"
-        '        SerialPort1.WriteLine(insgcode)
-        '        ListBox1.Items.Add(insgcode)
-        '    End If
-        'End While
-
-        If i < barisan Then  'jika ada instruksi then 
-            Dim myData = baris(barisan).Split(New Char() {"("c})
+        I = 0
+        While I < barisan  'jika ada instruksi
+            Dim myData = baris(I).Split(New Char() {"("c})
             If myData(0) = "maju" Then
                 Dim nilai As String = Val(myData(1))
-                Dim insgcode As String = "G21G91G1X" + Str(nilai) + "F1000"
+                Dim insgcode As String = "G21G91G1X1F791"
                 SerialPort1.WriteLine(insgcode)
                 ListBox1.Items.Add(insgcode)
             End If
-
-            If myData(0) = "mundur" Then
-                Dim nilai As String = Val(myData(1))
-                Dim insgcode As String = "G21G91G1X-" + Str(nilai) + "F1000"
-                SerialPort1.WriteLine(insgcode)
-                ListBox1.Items.Add(insgcode)
-            End If
-        End If
-
+        End While
     End Sub
 
 
@@ -64,8 +42,8 @@ Public Class Form1
         'Baud.Items.Add(57600)
         Baud.Items.Add(115200)
 
-        For i = 0 To UBound(myPort)
-            Port.Items.Add(myPort(i))
+        For I = 0 To UBound(myPort)
+            Port.Items.Add(myPort(I))
         Next
         Port.Text = Port.Items.Item(0)    'Set Port text to the first COM port detected
         Baud.Text = Baud.Items.Item(0)    'Set Baud text to the first Baud rate on the list
@@ -74,6 +52,9 @@ Public Class Form1
 
 
         Timer1.Start()
+    End Sub
+    Private Sub Port_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Port.SelectedIndexChanged
+
     End Sub
 
     'connect button code
